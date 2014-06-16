@@ -13,11 +13,11 @@ import java.util.Map;
  */
 public class SpatialController {
 
-    static final String GROUP_KEY = "ArchiMate_Grouping";
-    static final String FUNCTION_KEY = "ArchiMate_ApplicationFunction";
-    static final String COMPONENT_KEY = "ArchiMate_ApplicationComponent";
+    private final String GROUP_KEY = "ArchiMate_Grouping";
+    private final String FUNCTION_KEY = "ArchiMate_ApplicationFunction";
+    private final String COMPONENT_KEY = "ArchiMate_ApplicationComponent";
 
-    static final Map<IntersectionPair, List<DiagramObjectElement>> intersectingComponentMap = new HashMap<IntersectionPair, List<DiagramObjectElement>>();
+    private final Map<IntersectionPair, List<DiagramObjectElement>> intersectingComponentMap = new HashMap<IntersectionPair, List<DiagramObjectElement>>();
 
     public Map<IntersectionPair, List<DiagramObjectElement>> control(final Map<String, List<DiagramObjectElement>> components) {
 
@@ -56,7 +56,7 @@ public class SpatialController {
         return intersectingComponentMap;
     }
 
-    private boolean isPartOfGroupAndFunction(DiagramObjectElement comp, IntersectionPair ip) {
+    private boolean isPartOfGroupAndFunction(final DiagramObjectElement comp, final IntersectionPair ip) {
 
         if(ip == null) return false;
         // get the function and group name from the intersection pair
@@ -83,7 +83,7 @@ public class SpatialController {
         return false;
     }
 
-    private void addComponentToIntersectionSpace(DiagramObjectElement comp, IntersectionPair ip) {
+    private void addComponentToIntersectionSpace(final DiagramObjectElement comp, final IntersectionPair ip) {
         if(intersectingComponentMap.get(ip) == null) {
             intersectingComponentMap.put(ip, new ArrayList<DiagramObjectElement>());
         }

@@ -15,22 +15,23 @@ import static com.jd.sparx.models.DiagramObjectElement.getArea;
 /**
  * Created by Home PC on 13/06/14.
  */
-public class LandscapeGenerator {
+public final class LandscapeGenerator {
 
-    static Repository r;
-    static Map<String, List<DiagramObjectElement>> components;
-    static SpatialController spatialController;
+    static final Repository r;
+    static final Map<String, List<DiagramObjectElement>> components;
+    static final SpatialController spatialController;
+
+    static int rowHeight = 0;
 
     static {
         System.loadLibrary("SSJavaCOM");
         r = new Repository();
+        r.OpenFile("C://landscapes.eap");
         components = new HashMap<String, List<DiagramObjectElement>>();
         spatialController = new SpatialController();
     }
 
     public static void main(String[] args) {
-
-        r.OpenFile("C://landscapes.eap");
         walkPackages(0, r.GetModels());
         calcSpace(spatialController.control(components));
     }
@@ -42,7 +43,7 @@ public class LandscapeGenerator {
 
         for (final Map.Entry<IntersectionPair, List<DiagramObjectElement>> entry : intersectingComponentMap.entrySet()) {
 
-            Rectangle intersection = entry.getKey().getIntersection();
+            final Rectangle intersection = entry.getKey().getIntersection();
 
             // initialise the starting position for the intersection space
             pos[0] = entry.getKey().getIntersection().x;
@@ -55,15 +56,27 @@ public class LandscapeGenerator {
              */
             for (final DiagramObjectElement doe : entry.getValue()) {
 
+                // set the row height if the
+
                 if(spaceLeft == null) {
-                    spaceLeft = doe.getRectangle();
+                    spaceLeft = intersection; // set the space left to be the entire intersection space
+                    rowHeight = doe.getHeight();
+                } else {
+                    if(rowHeight < doe.getHeight()) {
+
+                    }
                 }
 
-                if (getArea(spaceLeft) < getArea(intersection)) {
-                    System.err.println("No room for the component");
+                if (Math.max(0,getArea(doe.getRectangle())) > Math.max(0, getArea(spaceLeft))) {
+                    System.err.println("No room for the component " + doe.getElement().GetName());
                     // place the x dimensions at the intersection start and move down the dimension of the last successful block
                     pos[0] = entry.getKey().getIntersection().x;
-                    pos[1] = entry.getKey().getIntersection().y + doe.getHeight();
+                    pos[1] = pos[1] + rowHeight;
+
+                    // reset row height to be the next largest
+                    rowHeight = doe.getHeight();
+
+                    // if still no space after a y shift then will need to expand the intersection space by a specific %
                 }
 
                 pos = SpatialComponentMover.moveToIntersection(doe, entry.getKey(), pos);
@@ -72,13 +85,10 @@ public class LandscapeGenerator {
                 int width = (int) intersection.getWidth();
                 int height = (int) intersection.getHeight();
 
-                spaceLeft = new Rectangle(pos[0], -pos[1], pos[0]-width, doe.getHeight());
-
+                spaceLeft = new Rectangle(pos[0], -pos[1], width-doe.getWidth(), doe.getHeight());
 
             }
-
         }
-
     }
 
     private static void walkPackages(int depth, Collection<Package> packages) {

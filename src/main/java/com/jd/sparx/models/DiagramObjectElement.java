@@ -16,7 +16,7 @@ public class DiagramObjectElement implements Comparable<DiagramObjectElement> {
     private final Element element;
     private final Rectangle rectangle;
 
-    public DiagramObjectElement(Diagram diagram, DiagramObject dog, Element element) {
+    public DiagramObjectElement(final Diagram diagram, final DiagramObject dog, final Element element) {
         this.diagram = diagram;
         this.dog = dog;
         this.element = element;
@@ -76,7 +76,7 @@ public class DiagramObjectElement implements Comparable<DiagramObjectElement> {
 
     @Override
     public int compareTo(final DiagramObjectElement that) {
-        return (int) ((getArea(this.rectangle)) - (getArea(that.rectangle)));
+        return (int) (getArea(that.rectangle)-getArea(this.rectangle));
     }
 
     public static double getArea(Rectangle rect) {

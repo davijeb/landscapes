@@ -8,7 +8,7 @@ import com.jd.sparx.models.IntersectionPair;
  */
 public class SpatialComponentMover {
 
-    public static int[] moveToIntersection(DiagramObjectElement comp, IntersectionPair ip, final int[] pos) {
+    public static int[] moveToIntersection(final DiagramObjectElement comp, final IntersectionPair ip, final int[] pos) {
 
         final int x = pos[0];
         final int y = -pos[1];
@@ -29,6 +29,6 @@ public class SpatialComponentMover {
         comp.getElement().Refresh();
         comp.getDog().Update();
 
-        return new int[]{comp.getDog().GetRight(),comp.getDog().GetTop()};
+        return new int[]{comp.getDog().GetRight(),-comp.getDog().GetTop()};
     }
 }

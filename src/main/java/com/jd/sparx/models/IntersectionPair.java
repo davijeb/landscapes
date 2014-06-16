@@ -7,11 +7,11 @@ import java.awt.*;
  */
 public class IntersectionPair {
 
-    final DiagramObjectElement function;
-    final DiagramObjectElement group;
-    final Rectangle intersection;
+    private final DiagramObjectElement function;
+    private final DiagramObjectElement group;
+    private final Rectangle intersection;
 
-    public IntersectionPair(DiagramObjectElement function, DiagramObjectElement group) {
+    public IntersectionPair(final DiagramObjectElement function, final DiagramObjectElement group) {
         this.function = function;
         this.group = group;
         intersection = function.getRectangle().intersection(group.getRectangle());
